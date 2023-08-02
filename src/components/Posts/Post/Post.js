@@ -8,7 +8,7 @@ const Post = () => {
     const classes = useStyles();
     
     return (
-        <h1>this is 1 post</h1>
+        <p>this is 1 post</p>
     )
 }
 
