@@ -1,32 +1,58 @@
-import React, {useState} from "react";
-import { useDispatch } from 'react-redux'
+import React, {useState, useEffect} from "react";
+import { useDispatch, useSelector } from 'react-redux'
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from 'react-file-base64'; 
 
 
 import useStyles from './styles.js'
-import { createPost } from "../../actions/posts.js"
+import { createPost, updatePost } from "../../actions/posts.js"
 
-const Form = () => {
+const Form = ( {currentId, setCurrentId} ) => {
+    const [postData, setPostData] = useState({creator: '',title: '',message: '', tags:'', selectFile: ''});
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [postData, setPostData] = useState({creator: '',title: '',message: '', tags:[], selectFile: ''})
 
+    const selectedPost = useSelector((state) => {      // if edit post selected >> currentId has value, then get the related post detail
+        return (currentId)? state.posts.find( (post)=> (post._id === currentId)? post : null) : null
+    })
+    
+    useEffect(()=>{
+        if(selectedPost) {
+            setPostData(selectedPost);
+        }
+    },[selectedPost])
+   
+
+   
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        dispatch(createPost(postData));
-        clear();
+        
+        if(currentId === 0) {  // editing post
+            console.log(postData)
+            dispatch(createPost(postData))
+            clear();
+        } else {
+            // console.log('postDate:', postData)
+            // console.log('selected post:', selectedPost)
+            dispatch(updatePost(currentId, postData))
+            clear()
+        }
     }
 
     const clear = () => {
-        setPostData({creator: '',title: '',message: '', tags:[], selectFile: ''});
+        setPostData({creator: '',title: '',message: '', tags:'', selectFile: ''});
+        setCurrentId(0);
     }
+
+    
+
+    
     
     return(
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.form} ${classes.root}`} onSubmit={handleSubmit}>
-                <Typography variant="h6"> Creating a Memory </Typography>
+                <Typography variant="h6"> { (currentId) ? 'Editing' : 'Creating'} a Memory </Typography>
                 <TextField name="creator" variant="outlined" label="Creator" fullWidth value={postData.creator} onChange={(e) => setPostData({...postData, creator: e.target.value})}/>
                 <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({...postData, title: e.target.value})}/>
                 <TextField name="message" variant="outlined" label="Message" fullWidth value={postData.message} onChange={(e) => setPostData({...postData, message: e.target.value})}/>

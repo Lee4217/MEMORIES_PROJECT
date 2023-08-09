@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom/client';
 import { applyMiddleware, compose } from 'redux';
 import {configureStore} from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-
 import thunk from 'redux-thunk';
 
+import './index.css';
 import App from './App';
 import rootReducer from './reducers/index.js';
 
