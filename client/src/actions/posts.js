@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as api from '../api/index.js'
 
 export const getPosts = () => async (dispatch) => {
@@ -34,9 +35,11 @@ export const updatePost = ( id, updatedPost) => async(dispatch) => {
 }
 
 
-export const likePost = () => async (dispatch) => {
+export const likePost = (id) => async (dispatch) => {
     try {
-        return null
+        const {data} = await api.likePost(id);
+
+        dispatch({ type : 'LIKE', payload: data})
 
     } catch (error) {
         console.log(error);
