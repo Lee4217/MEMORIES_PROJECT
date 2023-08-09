@@ -8,7 +8,7 @@ import useStyles from './styles.js'
 import { createPost, updatePost } from "../../actions/posts.js"
 
 const Form = ( {currentId, setCurrentId} ) => {
-    const [postData, setPostData] = useState({creator: '',title: '',message: '', tags:[], selectFile: ''});
+    const [postData, setPostData] = useState({creator: '',title: '',message: '', tags:'', selectFile: ''});
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -23,26 +23,31 @@ const Form = ( {currentId, setCurrentId} ) => {
     },[selectedPost])
    
 
+   
     
     const handleSubmit = (e) => {
         e.preventDefault();
-
         
-        if(currentId) {  // editing post
+        if(currentId === 0) {  // editing post
+            console.log(postData)
+            dispatch(createPost(postData))
+            clear();
+        } else {
             // console.log('postDate:', postData)
             // console.log('selected post:', selectedPost)
             dispatch(updatePost(currentId, postData))
             clear()
-        } else {
-            dispatch(createPost(postData))
-            clear();
         }
     }
 
     const clear = () => {
-        setPostData({creator: '',title: '',message: '', tags:[], selectFile: ''});
+        setPostData({creator: '',title: '',message: '', tags:'', selectFile: ''});
         setCurrentId(0);
     }
+
+    
+
+    
     
     return(
         <Paper className={classes.paper}>
