@@ -8,7 +8,7 @@ import useStyles from './styles.js'
 import { createPost, updatePost } from "../../actions/posts.js"
 
 const Form = ( {currentId, setCurrentId} ) => {
-    const [postData, setPostData] = useState({creator: '',title: '',message: '', tags:'', selectFile: ''});
+    const [postData, setPostData] = useState({creator: '',title: '',message: '', tags:[], selectFile: ''});
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const Form = ( {currentId, setCurrentId} ) => {
     }
 
     const clear = () => {
-        setPostData({creator: '',title: '',message: '', tags:'', selectFile: ''});
+        setPostData({creator: '',title: '',message: '', tags:[], selectFile: ''});
         setCurrentId(0);
     }
 

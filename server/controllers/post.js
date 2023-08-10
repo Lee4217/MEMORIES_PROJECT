@@ -36,7 +36,7 @@ export const updatePost = async (req, res) => {
     
     if (!mongoose.isValidObjectId(id)) return res.status(404).send(`No post with id: ${id}`);
 
-    const updatedPost = { creator, title, message, tags:tags.split(" "), selectedFile, _id: id }; // the saved post in MongoDB has id, need to add onto it, otherwise cant save
+    const updatedPost = { creator, title, message, tags:tags, selectedFile, _id: id }; // the saved post in MongoDB has id, need to add onto it, otherwise cant save
 
     await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
 
